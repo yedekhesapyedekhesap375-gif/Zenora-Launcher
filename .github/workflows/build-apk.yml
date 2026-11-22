@@ -17,14 +17,11 @@ jobs:
           distribution: 'temurin'
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
-      - name: Build Debug APK
+      - name: Generate Wrapper & Build APK
         run: |
-          if [ -f "./gradlew" ]; then
-            chmod +x ./gradlew
-            ./gradlew assembleDebug
-          else
-            gradle assembleDebug --no-daemon
-          fi
+          gradle wrapper --gradle-version 8.5 --distribution-type bin --no-daemon
+          chmod +x ./gradlew
+          ./gradlew assembleDebug --no-daemon
       - name: Upload APK
         if: always()
         uses: actions/upload-artifact@v4
